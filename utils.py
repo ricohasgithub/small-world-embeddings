@@ -8,11 +8,6 @@ import matplotlib as plt
 from torch_geometric.data import Data
 from geomstats.datasets.prepare_graph_data import Graph
 
-class GS_Graph(Graph):
-
-    def __init__(self, adjancecy, labels):
-        pass
-
 def nx_to_torch_geometric(graph, color_map):
     # Convert node labels to integers starting from 0
     node_mapping = {node: i for i, node in enumerate(graph.nodes())}
