@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from smallworld.draw import draw_network
 from smallworld import get_smallworld_graph
 
+from utils import nx_to_torch_geometric
+
 # Define network parameters
 N = 21
 k_over_2 = 2
@@ -24,11 +26,11 @@ coloring = nx.coloring.greedy_color(small_world, strategy="saturation_largest_fi
 # Map the coloring to two colors (e.g., red and blue)
 color_map = {node: "red" if color == 0 else "blue" for node, color in coloring.items()}
 
+print(nx_to_torch_geometric(small_world, coloring))
+
 # Draw the graph with the colored nodes
 nx.draw(small_world, with_labels=True, node_color=list(color_map.values()))
 plt.show()
-
-
 
 fig, ax = plt.subplots(1,3,figsize=(9,3))
 
