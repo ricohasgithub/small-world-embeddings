@@ -22,8 +22,12 @@ class SmallWorldDataset(Dataset):
         if graphs is not None:
             self.data_list = graphs
         else:
+            self.data_list = []
             # Load dataset from root directory
-            pass
+            for i in range(max_n):
+                curr_graph_path = f"{root}/graph_{i}.pickle"
+                graph = pickle.load(open(curr_graph_path, "rb"))
+                self.data_list.append(graph)
 
     def len(self):
         return len(self.data_list)
@@ -52,11 +56,15 @@ def generate_sw_dataset(filepath, num_graphs, max_n, beta_threshold,
 
         # Get ground truth - set threshold on beta
         y = 1 if sample_beta >= beta_threshold else 0
-        graph, _, coloring = get_sw_graph(sample_n, sample_k_over_2, sample_beta, y, coloring_strategy=coloring_strategy)
+        graph, small_world, coloring = get_sw_graph(sample_n, sample_k_over_2, sample_beta, y, coloring_strategy=coloring_strategy)
 
+        # Write metadata of graph
+        metadata = {"max_n": max_n, "y": [y]}
+        with open(f"{filepath}/graph_{i}_meta.json", "w") as meta_file:
+            json.dump(metadata, meta_file)
         # Save graph to filepath
         pickle.dump(graph, open(f"{filepath}/graph_{i}.pickle", "wb"))
-        # Writing JSON data
+        # Writing JSON coloring data
         with open(f"{filepath}/graph_{i}.json", "w") as coloring_file:
             json.dump(coloring, coloring_file)
         graphs.append(graph)
@@ -65,7 +73,7 @@ def generate_sw_dataset(filepath, num_graphs, max_n, beta_threshold,
     return SmallWorldDataset(graphs, max_n)
 
 if __name__ == "__main__":
-    generate_sw_dataset("./dataset", 100, 50, 0.25,
-                        25, 10,
+    generate_sw_dataset("./dataset", 100, 100, 0.25,
+                        50, 20,
                         5, 2,
                         0.25, 0.1)
