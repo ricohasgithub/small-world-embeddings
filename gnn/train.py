@@ -29,7 +29,7 @@ def train(model_class, dataset, epochs=10):
 
         optimizer.zero_grad()
 
-        out = model(data)
+        out, embedding = model(data)
         loss = F.nll_loss(out[data.train_mask], data.y[data.train_mask])
 
         loss.backward()
