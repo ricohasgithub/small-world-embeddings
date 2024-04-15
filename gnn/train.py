@@ -13,6 +13,7 @@ from torch_geometric.data import Data, Dataset
 from torch_geometric.nn import GCNConv
 
 from base_gnn import GCN
+from dataset import SmallWorldDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -42,3 +43,8 @@ def train(model_class, dataset, epochs=10):
     correct = (pred[data.test_mask] == data.y[data.test_mask]).sum()
     acc = int(correct) / int(data.test_mask.sum())
     print(f'Accuracy: {acc:.4f}')
+
+if __name__ == "__main__":
+    max_n = 100
+    dataset = SmallWorldDataset(None, max_n)
+    train(GCN, dataset)
