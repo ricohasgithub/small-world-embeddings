@@ -12,7 +12,7 @@ import matplotlib as plt
 from torch_geometric.data import Data, Dataset
 from torch_geometric.nn import GCNConv
 
-from base_gnn import GCN
+from gnn.base_gnn import GCN
 from dataset import SmallWorldDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
