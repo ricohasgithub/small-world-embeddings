@@ -10,14 +10,15 @@ import networkx as nx
 import matplotlib as plt
 
 from torch_geometric.data import Data, Dataset
-from torch_geometric.nn import GCNConv
+from torch_geometric.nn import GCNConv, global_mean_pool
 
 class GCN(nn.Module):
     
     def __init__(self, num_classes, num_node_features):
         super().__init__()
-        self.conv_1 = GCNConv(num_node_features, 16)
-        self.conv_2 = GCNConv(16, num_classes)
+        self.conv1 = GCNConv(num_node_features, 16)
+        self.conv2 = GCNConv(16, 16)
+        self.linear = nn.Linear(16, num_classes)
 
     def forward(self, data):
         # Retrieve data features
@@ -27,4 +28,7 @@ class GCN(nn.Module):
         x = F.relu(x)
         x = self.conv2(x, edge_index)
 
-        return F.log_softmax(x, dim=1), x
+        pooled = global_mean_pool(x, batch=None)
+        logits = self.linear(pooled)
+
+        return F.log_softmax(logits, dim=1), x

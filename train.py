@@ -10,41 +10,56 @@ import networkx as nx
 import matplotlib as plt
 
 from torch_geometric.data import Data, Dataset
+from torch_geometric.loader import DataLoader
+from torch_geometric.transforms import Pad
 from torch_geometric.nn import GCNConv
 
 from gnn.base_gnn import GCN
 from dataset import SmallWorldDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {device}")
 
-def train(model_class, dataset, epochs=10):
+def train(model_class, dataset, epochs=100):
 
-    model = model_class().to(device)
-    data = dataset[0].to(device)
+    train_dataset = dataset[:80]
+    test_dataset = dataset[80:]
+
+    train_loader = DataLoader(train_dataset, shuffle=True)
+    test_loader = DataLoader(test_dataset, shuffle=False)
+
+    model = model_class(2, 10).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
 
     model.train()
     for epoch in range(epochs):
 
-        optimizer.zero_grad()
+        total_loss = 0
+        for data in train_loader:
+            optimizer.zero_grad()
+            pred, embedding = model(data.to(device))
 
-        out, embedding = model(data)
-        loss = F.nll_loss(out[data.train_mask], data.y[data.train_mask])
+            loss = F.nll_loss(pred, data.y)
+            loss.backward()
+            optimizer.step()
 
-        loss.backward()
-        optimizer.step()
+            total_loss += loss.detach()
 
         print(f"Epoch: {epoch}")
-        print(f"Training loss: {loss.detach()}")
+        print(f"Average training loss: {total_loss/len(train_loader)}")
 
-    model.eval()
-    pred = model(data).argmax(dim=1)
-    correct = (pred[data.test_mask] == data.y[data.test_mask]).sum()
-    acc = int(correct) / int(data.test_mask.sum())
-    print(f'Accuracy: {acc:.4f}')
+        model.eval()
+        correct = 0
+        for data in test_loader:
+            pred, embedding = model(data.to(device))
+            pred = pred.argmax(dim=1)
+            correct += int((pred == data.y).sum())
+        print(f'Accuracy: {correct/len(test_loader.dataset):.4f}')
 
 if __name__ == "__main__":
     max_n = 100
-    dataset = SmallWorldDataset(None, max_n)
+    transform = Pad(max_n)
+    dataset = SmallWorldDataset(None, max_n, transform=transform)
+    # dataloader = DataLoader(dataset, batch_size=8)
     train(GCN, dataset)

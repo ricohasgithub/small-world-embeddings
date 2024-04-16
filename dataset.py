@@ -9,14 +9,15 @@ import numpy as np
 import networkx as nx
 import matplotlib as plt
 
-from torch_geometric.data import Data, Dataset, DataLoader
+from torch_geometric.data import Data, Dataset
+from torch_geometric.transforms import Pad
 from smallworld.draw import draw_network
 from smallworld import get_smallworld_graph
 
-from utils import nx_to_torch_geometric
+from utils import nx_to_torch_geometric, bfs_colors
 
 class SmallWorldDataset(Dataset):
-    def __init__(self, graphs, max_n, root="./datasets", transform=None, pre_transform=None):
+    def __init__(self, graphs, max_n, root="./dataset", transform=None, pre_transform=None):
         super().__init__(None, transform, pre_transform)
         self.max_n = max_n
         if graphs is not None:
@@ -35,16 +36,18 @@ class SmallWorldDataset(Dataset):
     def get(self, idx):
         return self.data_list[idx]
 
-def get_sw_graph(n, k_over_2, beta, y, coloring_strategy="saturation_largest_first"):
+def get_sw_graph(n, k_over_2, beta, y, coloring_strategy="saturation_largest_first", num_classes=10):
     small_world = get_smallworld_graph(n, k_over_2, beta)
-    coloring = nx.coloring.greedy_color(small_world, strategy=coloring_strategy)
+    # coloring = nx.coloring.greedy_color(small_world, strategy=coloring_strategy)
+    coloring = bfs_colors(small_world, num_colors=num_classes)
     return nx_to_torch_geometric(small_world, coloring, y), small_world, coloring
 
 def generate_sw_dataset(filepath, num_graphs, max_n, beta_threshold,
                         n_mean, n_variance,
                         k_over_2_mean, k_over_2_variance,
                         beta_mean, beta_variance,
-                        coloring_strategy="saturation_largest_first"):
+                        coloring_strategy="saturation_largest_first",
+                        num_classes=10):
 
     graphs = []
     for i in range(num_graphs):
