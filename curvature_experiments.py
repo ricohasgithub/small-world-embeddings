@@ -9,7 +9,7 @@ from GraphRicciCurvature.OllivierRicci import OllivierRicci
 
 def show_results(G):
     # Print the first five results
-    print("Karate Club Graph, first 5 edges: ")
+    print("Graph, first 5 edges: ")
     for n1,n2 in list(G.edges())[:5]:
         print("Ollivier-Ricci curvature of edge (%s,%s) is %f" % (n1 ,n2, G[n1][n2]["ricciCurvature"]))
 
@@ -29,12 +29,12 @@ def show_results(G):
 
     plt.tight_layout()
 
-N = np.arange(10, 1000, 1)
+N = np.arange(100, 1000, 1)
 betas = np.arange(0.025, 0.5, 0.01)
 
 for n in N:
     for beta in betas:
-        G = get_smallworld_graph(n, 2, beta)
+        G = get_smallworld_graph(n, 10, beta)
         orc = OllivierRicci(G, alpha=0.5, verbose="TRACE")
         orc.compute_ricci_curvature()
         G_orc = orc.G.copy()

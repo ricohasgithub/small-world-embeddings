@@ -73,3 +73,12 @@ def bfs_colors(graph, num_colors):
                         colors[neighbor] = (colors[current] + 1) % num_colors  # Tentatively assign a color
 
     return colors
+
+def plot_data_graph(databatch):
+    pass
+
+def plot_embeddings_2d(embedding):
+    pass
+
+def plot_embeddings_3d(embedding):
+    pass

@@ -12,9 +12,9 @@ import matplotlib as plt
 from torch_geometric.data import Data, Dataset
 from torch_geometric.loader import DataLoader
 from torch_geometric.transforms import Pad
-from torch_geometric.nn import GCNConv
 
 from gnn.base_gnn import GCN
+from gnn.knot_gnn import KnotGCN
 from dataset import SmallWorldDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -62,4 +62,4 @@ if __name__ == "__main__":
     transform = Pad(max_n)
     dataset = SmallWorldDataset(None, max_n, transform=transform)
     # dataloader = DataLoader(dataset, batch_size=8)
-    train(GCN, dataset)
+    train(KnotGCN, dataset)
