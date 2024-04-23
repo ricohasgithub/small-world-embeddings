@@ -18,9 +18,9 @@ class KnotGCN(nn.Module):
         super().__init__()
 
         self.conv1 = GCNConv(num_node_features, 16)
-        self.conv2 = GCNConv(16, 2)
+        self.conv2 = GCNConv(16, 3)
         
-        self.conv3 = GCNConv(2, 3)
+        self.conv3 = GCNConv(3, 3)
 
         self.project = nn.Linear(3, 3)
         self.project2 = nn.Linear(3, 3)
