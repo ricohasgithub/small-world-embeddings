@@ -22,7 +22,7 @@ class KnotGCN(nn.Module):
         
         self.conv3 = GCNConv(2, 3)
 
-        self.project = nn.Linear(2, 3)
+        self.project = nn.Linear(3, 3)
         self.project2 = nn.Linear(3, 3)
 
         self.linear = nn.Linear(3, num_classes)
@@ -37,7 +37,7 @@ class KnotGCN(nn.Module):
         x = F.normalize(x)
         embed_1 = x.clone().detach()
 
-        # x = self.conv3(x, edge_index)
+        x = self.conv3(x, edge_index)
         x = F.tanh(self.project(x))
         x = F.tanh(self.project2(x))
 
