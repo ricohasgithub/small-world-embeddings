@@ -25,7 +25,7 @@ def train(model_class, dataset, epochs=100):
     train_dataset = dataset[:80]
     test_dataset = dataset[80:]
 
-    train_loader = DataLoader(train_dataset, shuffle=True)
+    train_loader = DataLoader(train_dataset, shuffle=False)
     test_loader = DataLoader(test_dataset, shuffle=False)
 
     model = model_class(2, 10).to(device)
@@ -55,9 +55,10 @@ def train(model_class, dataset, epochs=100):
             pred, embedding = model(data.to(device))
             pred = pred.argmax(dim=1)
             correct += int((pred == data.y).sum())
-        print(f'Accuracy: {correct/len(test_loader.dataset):.4f}')
+        print(f"Accuracy: {correct/len(test_loader.dataset):.4f}")
 
     # Save sample prediction
+    pred, embedding = model(train_dataset[0].to(device))
     final_embedding, spherical_embedding = embedding[0].cpu().detach().numpy(), embedding[1].cpu().detach().numpy()
     np.save("sample_circle.npy", spherical_embedding)
     np.save("sample_final.npy", final_embedding)

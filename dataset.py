@@ -62,7 +62,7 @@ def generate_sw_dataset(filepath, num_graphs, max_n, beta_threshold,
         graph, small_world, coloring = get_sw_graph(sample_n, sample_k_over_2, sample_beta, y, coloring_strategy=coloring_strategy)
 
         # Write metadata of graph
-        metadata = {"max_n": max_n, "y": [y]}
+        metadata = {"max_n": max_n, "y": [y], "n": sample_n, "beta": sample_beta, "k_over_2": sample_k_over_2}
         with open(f"{filepath}/graph_{i}_meta.json", "w") as meta_file:
             json.dump(metadata, meta_file)
         # Save graph to filepath
@@ -76,7 +76,7 @@ def generate_sw_dataset(filepath, num_graphs, max_n, beta_threshold,
     return SmallWorldDataset(graphs, max_n)
 
 if __name__ == "__main__":
-    generate_sw_dataset("./dataset", 100, 100, 0.25,
+    generate_sw_dataset("./dataset", 100, 100, 0.05,
                         50, 20,
                         5, 2,
-                        0.25, 0.1)
+                        0.05, 0.025)
