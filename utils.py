@@ -1,13 +1,17 @@
 
+import json
+import pickle
 import random
 
 import torch
 import torch_geometric
 
 import numpy as np
-import matplotlib as plt
+import networkx as nx
+import matplotlib.pyplot as plt
 
 from collections import deque
+from small_world import draw_network
 from torch_geometric.data import Data
 
 # Given a networkx graph with a dictionary of color mappings, return its torch_geometric Data object representation
@@ -111,3 +115,26 @@ def plot_embeddings_3d(embedding):
 
     # Show the plot
     plt.show()
+
+# Read graph
+with open("dataset/graph_0.pickle", "rb") as file:
+    data = pickle.load(file)
+    # Convert to NetworkX graph
+    G = nx.Graph()
+    # Add edges from edge_index
+    edge_index = data.edge_index.t().numpy()
+    G.add_edges_from(edge_index)
+
+    # Optional: Add node features if present
+    for i, feat in enumerate(data.x):
+        G.nodes[i]['feature'] = feat.numpy()
+
+with open("dataset/graph_0_meta.json", "r") as file:
+    meta = json.load(file)
+    k_over_2 = meta["k_over_2"]
+
+draw_network(G, k_over_2)
+spherical_embedding = np.load("sample_circle.npy")
+final_embedding = np.load("sample_final.npy")
+plot_embeddings_2d(spherical_embedding)
+plot_embeddings_3d(final_embedding)
