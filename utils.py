@@ -78,7 +78,36 @@ def plot_data_graph(databatch):
     pass
 
 def plot_embeddings_2d(embedding):
-    pass
+
+    x, y = embedding[:, 0], embedding[:, 1]
+
+    # Create the plot
+    plt.figure(figsize=(8, 6))
+    plt.scatter(x, y, color='blue', marker='o')  # Customize color and marker here
+
+    # Adding titles and labels
+    plt.title('2D Tensor Point Cloud')
+    plt.xlabel('X coordinate')
+    plt.ylabel('Y coordinate')
+
+    # Show the plot
+    plt.grid(True)
+    plt.show()
 
 def plot_embeddings_3d(embedding):
-    pass
+    
+    x, y, z = embedding[:, 0], embedding[:, 1], embedding[:, 2]
+    
+    # Create a 3D plot
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(x, y, z, color='red', marker='o')  # Customize color and marker here
+
+    # Adding titles and labels
+    ax.set_title('3D Tensor Point Cloud')
+    ax.set_xlabel('X coordinate')
+    ax.set_ylabel('Y coordinate')
+    ax.set_zlabel('Z coordinate')
+
+    # Show the plot
+    plt.show()

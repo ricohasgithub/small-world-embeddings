@@ -57,6 +57,11 @@ def train(model_class, dataset, epochs=100):
             correct += int((pred == data.y).sum())
         print(f'Accuracy: {correct/len(test_loader.dataset):.4f}')
 
+    # Save sample prediction
+    spherical_embedding, final_embedding = embedding[0].cpu().detach().numpy(), embedding[1].cpu().detach().numpy()
+    np.save("sample_circle.npy", spherical_embedding)
+    np.save("sample_final.npy", final_embedding)
+
 if __name__ == "__main__":
     max_n = 100
     transform = Pad(max_n)
