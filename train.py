@@ -61,8 +61,8 @@ def train(model_class, dataset, epochs=100):
     for i in range(10):
         pred, embedding = model(train_dataset[i].to(device))
         final_embedding, spherical_embedding = embedding[0].cpu().detach().numpy(), embedding[1].cpu().detach().numpy()
-        np.save(f"sample_circle_{i}.npy", spherical_embedding)
-        np.save(f"sample_final_{i}.npy", final_embedding)
+        np.save(f"samples/sample_circle_{i}.npy", spherical_embedding)
+        np.save(f"samples/sample_final_{i}.npy", final_embedding)
 
 if __name__ == "__main__":
     max_n = 100
