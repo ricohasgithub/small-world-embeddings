@@ -11,7 +11,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 from collections import deque
-from small_world import draw_network
+from smallworld.draw import draw_network
 from torch_geometric.data import Data
 
 # Given a networkx graph with a dictionary of color mappings, return its torch_geometric Data object representation

@@ -11,7 +11,6 @@ import matplotlib as plt
 
 from torch_geometric.data import Data, Dataset
 from torch_geometric.transforms import Pad
-from smallworld.draw import draw_network
 from smallworld import get_smallworld_graph
 
 from utils import nx_to_torch_geometric, bfs_colors

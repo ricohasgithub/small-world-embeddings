@@ -58,10 +58,11 @@ def train(model_class, dataset, epochs=100):
         print(f"Accuracy: {correct/len(test_loader.dataset):.4f}")
 
     # Save sample prediction
-    pred, embedding = model(train_dataset[0].to(device))
-    final_embedding, spherical_embedding = embedding[0].cpu().detach().numpy(), embedding[1].cpu().detach().numpy()
-    np.save("sample_circle.npy", spherical_embedding)
-    np.save("sample_final.npy", final_embedding)
+    for i in range(10):
+        pred, embedding = model(train_dataset[i].to(device))
+        final_embedding, spherical_embedding = embedding[0].cpu().detach().numpy(), embedding[1].cpu().detach().numpy()
+        np.save(f"sample_circle_{i}.npy", spherical_embedding)
+        np.save(f"sample_final_{i}.npy", final_embedding)
 
 if __name__ == "__main__":
     max_n = 100
