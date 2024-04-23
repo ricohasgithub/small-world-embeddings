@@ -75,7 +75,7 @@ def generate_sw_dataset(filepath, num_graphs, max_n, beta_threshold,
     return SmallWorldDataset(graphs, max_n)
 
 if __name__ == "__main__":
-    generate_sw_dataset("./dataset", 100, 100, 0.05,
+    generate_sw_dataset("./dataset", 100, 100, 0.25,
                         50, 20,
                         5, 2,
-                        0.05, 0.025)
+                        0.25, 0.1)
