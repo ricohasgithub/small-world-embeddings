@@ -116,8 +116,10 @@ def plot_embeddings_3d(embedding):
     # Show the plot
     plt.show()
 
+g = 5
+
 # Read graph
-with open("dataset/graph_0.pickle", "rb") as file:
+with open(f"dataset/graph_{g}.pickle", "rb") as file:
     data = pickle.load(file)
     # Convert to NetworkX graph
     G = nx.Graph()
@@ -129,12 +131,12 @@ with open("dataset/graph_0.pickle", "rb") as file:
     for i, feat in enumerate(data.x):
         G.nodes[i]['feature'] = feat.numpy()
 
-with open("dataset/graph_0_meta.json", "r") as file:
+with open(f"dataset/graph_{g}_meta.json", "r") as file:
     meta = json.load(file)
     k_over_2 = meta["k_over_2"]
 
 draw_network(G, k_over_2)
-spherical_embedding = np.load("sample_circle.npy")
-final_embedding = np.load("sample_final.npy")
+spherical_embedding = np.load(f"samples/sample_circle_{g}.npy")
+final_embedding = np.load(f"samples/sample_final_{g}.npy")
 plot_embeddings_2d(spherical_embedding)
 plot_embeddings_3d(final_embedding)
