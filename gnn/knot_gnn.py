@@ -38,8 +38,7 @@ class KnotGCN(nn.Module):
         embed_1 = x.clone().detach()
 
         x = self.conv3(x, edge_index)
-        x = F.tanh(self.project(x))
-        x = F.tanh(self.project2(x))
+        x = self.project(x)
 
         pooled = global_mean_pool(x, batch=None)
         logits = self.linear(pooled)
