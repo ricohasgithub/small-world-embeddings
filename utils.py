@@ -90,9 +90,7 @@ def plot_embeddings_2d(embedding):
     plt.scatter(x, y, color='blue', marker='o')  # Customize color and marker here
 
     # Adding titles and labels
-    plt.title('2D Tensor Point Cloud')
-    plt.xlabel('X coordinate')
-    plt.ylabel('Y coordinate')
+    plt.title('Circular Embedding')
 
     # Show the plot
     plt.grid(True)
@@ -108,15 +106,12 @@ def plot_embeddings_3d(embedding):
     ax.scatter(x, y, z, color='red', marker='o')  # Customize color and marker here
 
     # Adding titles and labels
-    ax.set_title('3D Tensor Point Cloud')
-    ax.set_xlabel('X coordinate')
-    ax.set_ylabel('Y coordinate')
-    ax.set_zlabel('Z coordinate')
+    ax.set_title('Final Embedding')
 
     # Show the plot
     plt.show()
 
-g = 5
+g = 0
 
 # Read graph
 with open(f"dataset/graph_{g}.pickle", "rb") as file:
