@@ -12,6 +12,7 @@ import matplotlib as plt
 from torch_geometric.data import Data, Dataset
 from torch_geometric.nn import GCNConv, global_mean_pool
 
+# Partial implementation of the Knot Embedding GNN
 class KnotGCN(nn.Module):
     
     def __init__(self, num_classes, num_node_features):
